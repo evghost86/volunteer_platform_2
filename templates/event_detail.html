@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-lg">
+            <div class="card-header bg-transparent border-0 pt-4">
+                <h2 class="mb-0 fw-bold">{{ event.title }}</h2>
+                <div class="mt-2">
+                    <span class="badge bg-primary"><i class="fas fa-map-marker-alt me-1"></i>{{ event.location }}</span>
+                    <span class="badge bg-secondary"><i class="fas fa-clock me-1"></i>{{ event.date.strftime('%d.%m.%Y %H:%M') }}</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h5><i class="fas fa-align-left me-2 text-primary"></i>Описание</h5>
+                    <p class="lead">{{ event.description }}</p>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="alert alert-light shadow-sm">
+                            <i class="fas fa-users fa-2x float-end text-primary"></i>
+                            <h6 class="mb-0">Участников</h6>
+                            <p class="display-6 fw-bold mb-0">{{ event.current_volunteers }} <small class="text-muted">/ {{ event.max_volunteers }}</small></p>
+                            <span class="text-muted">Свободно {{ event.spots_left }} мест</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-light shadow-sm">
+                            <i class="fas fa-calendar-day fa-2x float-end text-primary"></i>
+                            <h6 class="mb-0">Дата и время</h6>
+                            <p class="h5 mb-0">{{ event.date.strftime('%d %B %Y') }}</p>
+                            <span class="text-muted">{{ event.date.strftime('%H:%M') }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 mt-4">
+                    {% if current_user.is_authenticated %}
+                        {% if is_registered %}
+                            <form method="POST" action="{{ url_for('cancel_registration', event_id=event.id) }}" class="flex-grow-1">
+                                <button type="submit" class="btn btn-danger w-100"><i class="fas fa-times-circle me-2"></i>Отменить запись</button>
+                            </form>
+                        {% else %}
+                            {% if event.spots_left > 0 %}
+                                <form method="POST" action="{{ url_for('register_for_event', event_id=event.id) }}" class="flex-grow-1">
+                                    <button type="submit" class="btn btn-success w-100"><i class="fas fa-check-circle me-2"></i>Записаться</button>
+                                </form>
+                            {% else %}
+                                <button class="btn btn-secondary w-100" disabled><i class="fas fa-ban me-2"></i>Нет мест</button>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-primary w-100"><i class="fas fa-sign-in-alt me-2"></i>Войдите, чтобы записаться</a>
+                    {% endif %}
+                    <a href="{{ url_for('events') }}" class="btn btn-outline-secondary"><i class="fas fa-arrow-left"></i> Назад</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

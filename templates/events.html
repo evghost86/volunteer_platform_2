@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-center mb-5 fw-bold"><i class="fas fa-calendar-alt me-2 text-primary"></i>Все мероприятия</h1>
+<div class="row">
+    {% for event in events %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.title }}</h5>
+                    <p class="card-text text-muted">{{ event.description[:100] }}{% if event.description|length > 100 %}...{% endif %}</p>
+                    <div class="mb-2">
+                        <span class="badge bg-primary"><i class="fas fa-map-marker-alt me-1"></i>{{ event.location }}</span>
+                        <span class="badge bg-secondary"><i class="fas fa-clock me-1"></i>{{ event.date.strftime('%d.%m.%Y %H:%M') }}</span>
+                    </div>
+                    <p class="mb-2"><i class="fas fa-users"></i> Свободно мест: <strong>{{ event.spots_left }}</strong> / {{ event.max_volunteers }}</p>
+                    <a href="{{ url_for('event_detail', event_id=event.id) }}" class="btn btn-primary w-100 mt-2">Участвовать</a>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-12 text-center py-5">
+            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+            <p class="lead">Мероприятий пока нет. <a href="{{ url_for('admin_dashboard') if current_user.is_admin else url_for('index') }}">Создайте первое!</a></p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

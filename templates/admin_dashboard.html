@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="fw-bold mb-4"><i class="fas fa-tachometer-alt me-2 text-primary"></i>Панель управления</h1>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-center bg-gradient-primary text-white">
+            <div class="card-body">
+                <i class="fas fa-calendar-alt fa-3x mb-2"></i>
+                <h3>{{ events|length }}</h3>
+                <p class="mb-0">Мероприятий</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center bg-gradient-success text-white">
+            <div class="card-body">
+                <i class="fas fa-users fa-3x mb-2"></i>
+                <h3>{{ users|length }}</h3>
+                <p class="mb-0">Волонтёров</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center bg-gradient-info text-white">
+            <div class="card-body">
+                <i class="fas fa-hand-peace fa-3x mb-2"></i>
+                <h3>{{ registrations|length }}</h3>
+                <p class="mb-0">Записей</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3><i class="fas fa-list me-2"></i>Мероприятия</h3>
+    <a href="{{ url_for('create_event') }}" class="btn btn-success"><i class="fas fa-plus me-2"></i>Создать</a>
+</div>
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>ID</th><th>Название</th><th>Дата</th><th>Волонтёров</th><th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr>
+                <td>{{ event.id }}</td>
+                <td>{{ event.title }}</td>
+                <td>{{ event.date.strftime('%d.%m.%Y %H:%M') }}</td>
+                <td>{{ event.current_volunteers }}/{{ event.max_volunteers }}</td>
+                <td>
+                    <a href="{{ url_for('edit_event', event_id=event.id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                    <form method="POST" action="{{ url_for('delete_event', event_id=event.id) }}" style="display:inline;">
+                        <button class="btn btn-sm btn-danger" onclick="return confirm('Удалить?')"><i class="fas fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3 class="mt-5"><i class="fas fa-clipboard-list me-2"></i>Записи волонтёров</h3>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Волонтёр</th><th>Мероприятие</th><th>Дата записи</th><th>Посещение</th><th>Действие</th></tr>
+        </thead>
+        <tbody>
+            {% for reg in registrations %}
+            <tr>
+                <td>{{ reg.volunteer.username }}</td>
+                <td>{{ reg.event.title }}</td>
+                <td>{{ reg.registered_at.strftime('%d.%m.%Y') }}</td>
+                <td>{% if reg.attended %}<span class="badge bg-success">Да</span>{% else %}<span class="badge bg-secondary">Нет</span>{% endif %}</td>
+                <td>
+                    {% if not reg.attended %}
+                    <form method="POST" action="{{ url_for('mark_attended', reg_id=reg.id) }}">
+                        <button class="btn btn-sm btn-primary"><i class="fas fa-check"></i> Отметить</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

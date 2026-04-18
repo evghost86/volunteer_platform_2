@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-80">
+    <div class="col-md-5 col-lg-4">
+        <div class="card border-0 shadow-xl">
+            <div class="card-header bg-transparent border-0 text-center pt-5">
+                <i class="fas fa-sign-in-alt fa-3x text-primary mb-3"></i>
+                <h3 class="fw-bold">С возвращением!</h3>
+            </div>
+            <div class="card-body p-4 p-lg-5">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                            {{ form.email(class="form-control form-control-lg", placeholder="Email") }}
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fas fa-lock"></i></span>
+                            {{ form.password(class="form-control form-control-lg", placeholder="Пароль") }}
+                        </div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        {{ form.remember(class="form-check-input") }}
+                        {{ form.remember.label(class="form-check-label") }}
+                    </div>
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-primary btn-lg fw-bold") }}
+                    </div>
+                </form>
+                <p class="text-center mt-4">Нет аккаунта? <a href="{{ url_for('register') }}">Регистрация</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
