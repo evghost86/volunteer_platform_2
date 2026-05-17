@@ -4,29 +4,29 @@
 
 <div class="row mb-4">
     <div class="col-md-4">
-        <div class="card text-center bg-gradient-primary text-white">
+        <div class="card text-center text-white bg-primary bg-gradient">
             <div class="card-body">
                 <i class="fas fa-calendar-alt fa-3x mb-2"></i>
-                <h3>{{ events|length }}</h3>
-                <p class="mb-0">Мероприятий</p>
+                <h3 class="display-6">{{ events|length if events else 0 }}</h3>
+                <p class="mb-0 text-uppercase small fw-bold">Мероприятий</p>
             </div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card text-center bg-gradient-success text-white">
+        <div class="card text-center text-white bg-success bg-gradient">
             <div class="card-body">
                 <i class="fas fa-users fa-3x mb-2"></i>
-                <h3>{{ users|length }}</h3>
-                <p class="mb-0">Волонтёров</p>
+                <h3 class="display-6">{{ users|length if users else 0 }}</h3>
+                <p class="mb-0 text-uppercase small fw-bold">Волонтёров</p>
             </div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card text-center bg-gradient-info text-white">
+        <div class="card text-center text-white bg-info bg-gradient">
             <div class="card-body">
                 <i class="fas fa-hand-peace fa-3x mb-2"></i>
-                <h3>{{ registrations|length }}</h3>
-                <p class="mb-0">Записей</p>
+                <h3 class="display-6">{{ registrations|length if registrations else 0 }}</h3>
+                <p class="mb-0 text-uppercase small fw-bold">Записей</p>
             </div>
         </div>
     </div>
