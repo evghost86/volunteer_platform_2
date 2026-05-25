@@ -26,7 +26,7 @@ class Event(db.Model):
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    registrations = db.relationship('Registration', backref='event', lazy=True)
+    registrations = db.relationship('Registration', backref='event', lazy=True, cascade="all, delete-orphan")
 
     @property
     def current_volunteers(self):
